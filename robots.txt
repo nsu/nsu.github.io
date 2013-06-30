@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://nsu.github.io/sitemap.xml 
+Sitemap: http://blog.alexkarpinski.com/sitemap.xml 
