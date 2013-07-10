@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Electric Garbage]]></title>
-  <link href="http://blog.alexkarpinski.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: database | Electric Garbage]]></title>
+  <link href="http://blog.alexkarpinski.com/blog/categories/database/atom.xml" rel="self"/>
   <link href="http://blog.alexkarpinski.com/"/>
   <updated>2013-07-09T21:13:45-04:00</updated>
   <id>http://blog.alexkarpinski.com/</id>
@@ -76,15 +76,6 @@ that very hard to take down without an act of God (or a very mistaken sysadmin).
 <p>The advantage of this system is that not only do you get high availaility,</p>
 
 <h2>Rolling It</h2>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Initial commit]]></title>
-    <link href="http://blog.alexkarpinski.com/blog/2013/06/29/initial-commit/"/>
-    <updated>2013-06-29T23:44:00-04:00</updated>
-    <id>http://blog.alexkarpinski.com/blog/2013/06/29/initial-commit</id>
-    <content type="html"><![CDATA[
 ]]></content>
   </entry>
   
