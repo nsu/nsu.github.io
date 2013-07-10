@@ -35,11 +35,12 @@ However, if you're like Sudo, you don't really have that choice. We use location
 data extensively for to help users find deals near them, and that means we need 
 a location-aware DB. Check out 
 [these tables](http://www.bostongis.com/PrinterFriendly.aspx?content_name=sqlserver2008_postgis_mysql_compare)
-for a good comparion of the available location-aware databases. Then compare that with 
+for a good comparison of the available location-aware databases. Then compare that with 
 [Django's ORM compatability](https://docs.djangoproject.com/en/dev/ref/databases/#using-a-3rd-party-database-backend)
-and compare all of that to GeoDjango's compatible database backends 
+and compare all of that to [GeoDjango's compatible database
+backends](https://docs.djangoproject.com/en/dev/ref/contrib/gis/db-api/)
 
-**TL;DR** Sometimes you just gotta roll your own infrastructure.
+The result is that sometimes you've just gotta roll your own infrastructure.
 
 ## What Do We Want?
 
