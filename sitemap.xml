@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
+    <url>
+        <loc>http://blog.alexkarpinski.com/blog/2013/06/29/initial-commit/</loc>
+        <lastmod>2013-07-09T22:00:11-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://blog.alexkarpinski.com/blog/2013/06/30/high-availability-postgres-on-aws/
+        </loc>
+        <lastmod>2013-07-09T22:10:09-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://blog.alexkarpinski.com/blog/archives/</loc>
+        <lastmod>2013-07-09T22:10:09-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://blog.alexkarpinski.com/</loc>
+        <lastmod>2013-07-09T22:10:09-04:00</lastmod>
+    </url>
+    <url>
+        <loc>http://blog.alexkarpinski.com/robots.txt</loc>
+        <lastmod>2013-07-09T22:00:11-04:00</lastmod>
+    </url>
+</urlset>
