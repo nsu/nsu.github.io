@@ -96,7 +96,22 @@ it.
 -> Avoid this <-
 
 
-### High Performance
+### High Scalability
 
-The advantage of this system is that not only do you get high availaility, 
+While Sudo doesn't need the sort of performance that apps like Instagram or
+Pinterest use AWS to achieve, we don't want to be locked into a low-performance
+solution for our database, just because it fit our needs early on. 
 
+The goal here is to build a database layer that can increase and decrease in
+performance in order to best fit our needs at any given time. This
+means that not only should we have the ability to easily scale our database 
+to respond to increases in user demand, but we should also be able to decrease
+during lulls in order to minimize cost.
+
+What's Next?
+------------
+
+The goal is to use Chef, and some combination of Amazon tools in order to
+provide this scalable, resiliant location-aware database architecture. If you're
+interested in the options, check out part two for a few possible solutions to
+this problem.
