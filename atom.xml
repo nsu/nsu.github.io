@@ -4,7 +4,7 @@
   <title><![CDATA[Electric Garbage]]></title>
   <link href="http://blog.alexkarpinski.com/atom.xml" rel="self"/>
   <link href="http://blog.alexkarpinski.com/"/>
-  <updated>2013-07-09T23:08:43-04:00</updated>
+  <updated>2013-07-09T23:12:42-04:00</updated>
   <id>http://blog.alexkarpinski.com/</id>
   <author>
     <name><![CDATA[Alex Karpinski]]></name>
@@ -68,7 +68,11 @@ well, <a href="https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/pos
 hard</a></p>
 
 <p>Getting the last two problems solved is a lot harder than the first two, though,
-and it&rsquo;s probably worthwhile to at least examine the basic ideas behind each.</p>
+and it&rsquo;s probably worthwhile to at least examine the basic reasons you might
+want each.</p>
+
+<p>If you&rsquo;re comfortable with operations engineering, you can probably skip this
+next bit safely.</p>
 
 <h3>High Availability</h3>
 
