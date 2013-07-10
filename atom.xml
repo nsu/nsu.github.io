@@ -4,7 +4,7 @@
   <title><![CDATA[Electric Garbage]]></title>
   <link href="http://blog.alexkarpinski.com/atom.xml" rel="self"/>
   <link href="http://blog.alexkarpinski.com/"/>
-  <updated>2013-07-09T23:05:27-04:00</updated>
+  <updated>2013-07-09T23:07:20-04:00</updated>
   <id>http://blog.alexkarpinski.com/</id>
   <author>
     <name><![CDATA[Alex Karpinski]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[High availability postgres on AWS: The Problem]]></title>
     <link href="http://blog.alexkarpinski.com/blog/2013/06/30/high-availability-postgres-on-aws/"/>
-    <updated>2013-06-30T13:01:00-04:00</updated>
+    <updated>2013-06-30T00:00:00-04:00</updated>
     <id>http://blog.alexkarpinski.com/blog/2013/06/30/high-availability-postgres-on-aws</id>
     <content type="html"><![CDATA[<p>At <a href="http://gosudo.com">Sudo</a> we use Postgres for our database backend. Postgres
 is a fantastic database that provides a lot of functionality and stability over
