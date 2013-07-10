@@ -4,7 +4,7 @@
   <title><![CDATA[Electric Garbage]]></title>
   <link href="http://blog.alexkarpinski.com/atom.xml" rel="self"/>
   <link href="http://blog.alexkarpinski.com/"/>
-  <updated>2013-07-09T23:07:20-04:00</updated>
+  <updated>2013-07-09T23:08:43-04:00</updated>
   <id>http://blog.alexkarpinski.com/</id>
   <author>
     <name><![CDATA[Alex Karpinski]]></name>
@@ -64,7 +64,8 @@ and compare all of that to GeoDjango&rsquo;s compatible database backends</p>
 
 <p>Just by picking Postgres+PostGIS we get #1 an #2, literally for free. If you&rsquo;re
 curious how easy it is to set up a location aware Postgres database with Django,
-my chef recipe says the server config takes about three steps.</p>
+well, <a href="https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/postgis/">It&rsquo;s not that easy, but it&rsquo;s not that
+hard</a></p>
 
 <p>Getting the last two problems solved is a lot harder than the first two, though,
 and it&rsquo;s probably worthwhile to at least examine the basic ideas behind each.</p>
