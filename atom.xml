@@ -4,7 +4,7 @@
   <title><![CDATA[Electric Garbage]]></title>
   <link href="http://blog.alexkarpinski.com/atom.xml" rel="self"/>
   <link href="http://blog.alexkarpinski.com/"/>
-  <updated>2013-07-09T23:49:26-04:00</updated>
+  <updated>2013-07-09T23:58:10-04:00</updated>
   <id>http://blog.alexkarpinski.com/</id>
   <author>
     <name><![CDATA[Alex Karpinski]]></name>
@@ -26,8 +26,8 @@ AWS doesn&rsquo;t support Postgres for RDS yet. This means that if you want high
 availability and scalability with Postgres, you&rsquo;re going to have to implement
 your own solution.</p>
 
-<p>Yeah, things like <a href="http://www.cloudpostgres.com/">Cloud Postgres</a> exist, but
-they&rsquo;re nowhere near the power of RDS (that&rsquo;s not to bash on Cloud Postgres,
+<p>There are things like <a href="http://www.cloudpostgres.com/">Cloud Postgres</a> out there, but
+they don&rsquo;t provide anything like the power of RDS (that&rsquo;s not to bash on Cloud Postgres,
 which is a really cool platform). So if you can use MySQL, Oracle or MSSQL,
 I&rsquo;d recommend doing that, and saying goodbye to  Postgres until Amazon
 integrates it into RDS. This will give you easy access to to performance and
