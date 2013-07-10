@@ -4,7 +4,7 @@
   <title><![CDATA[Electric Garbage]]></title>
   <link href="http://blog.alexkarpinski.com/atom.xml" rel="self"/>
   <link href="http://blog.alexkarpinski.com/"/>
-  <updated>2013-07-09T21:27:39-04:00</updated>
+  <updated>2013-07-09T22:00:15-04:00</updated>
   <id>http://blog.alexkarpinski.com/</id>
   <author>
     <name><![CDATA[Alex Karpinski]]></name>
@@ -43,7 +43,7 @@ and compare all of that to GeoDjango&rsquo;s compatible database backends</p>
 
 <h2>Planning It</h2>
 
-<p>So our requirements are something like this</p>
+<p>So our requirements are something like this (and in this order)</p>
 
 <ol>
 <li>Support location data</li>
@@ -55,8 +55,9 @@ and compare all of that to GeoDjango&rsquo;s compatible database backends</p>
 
 <p>Just by picking Postgres+PostGIS we get #1 an #2, literally for free. If you&rsquo;re
 curious how easy it is to set up a location aware Postgres database with Django,
-my chef recipe says the server config takes about 3 steps. Numbers 3 and 4 are a
-bit trickier though.</p>
+my chef recipe says the server config takes about three steps.</p>
+
+<p>Getting the last two problems solved is a lot harder than the first two, though.</p>
 
 <h3>High Availability</h3>
 
@@ -69,7 +70,7 @@ go down and the rest of your cluster could recover without going offline, and
 a replacement server could be provisioned, and joined to the cluster. This
 should all happen without you having to lift a finger. Build a system like this
 across all availability zones in an AWS region, and you get a database cluster
-that very hard to take down without an act of God (or a very mistaken sysadmin).</p>
+that&rsquo;s very hard to take down without an act of God (or a very mistaken sysadmin).</p>
 
 <h3>High Performance</h3>
 
