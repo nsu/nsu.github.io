@@ -30,7 +30,7 @@ and compare all of that to GeoDjango's compatible database backends
 
 ## Planning It
 
-So our requirements are something like this
+So our requirements are something like this (and in this order)
 
 1. Support location data
 2. Support Django
@@ -39,8 +39,9 @@ So our requirements are something like this
 
 Just by picking Postgres+PostGIS we get #1 an #2, literally for free. If you're
 curious how easy it is to set up a location aware Postgres database with Django,
-my chef recipe says the server config takes about 3 steps. Numbers 3 and 4 are a
-bit trickier though. 
+my chef recipe says the server config takes about three steps. 
+
+Getting the last two problems solved is a lot harder than the first two, though.
 
 ### High Availability
 
@@ -54,7 +55,7 @@ go down and the rest of your cluster could recover without going offline, and
 a replacement server could be provisioned, and joined to the cluster. This
 should all happen without you having to lift a finger. Build a system like this
 across all availability zones in an AWS region, and you get a database cluster
-that very hard to take down without an act of God (or a very mistaken sysadmin).
+that's very hard to take down without an act of God (or a very mistaken sysadmin).
 
 ### High Performance
 
