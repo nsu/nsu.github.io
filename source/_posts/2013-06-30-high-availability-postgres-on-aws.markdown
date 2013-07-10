@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "High availability postgres on AWS"
+title: "High availability postgres on AWS: The Problem"
 date: 2013-06-30 13:01
 comments: true
 categories: 
@@ -11,12 +11,24 @@ MySQL (and if you really want to use MySQL, you should use
 [MariaDB](http://mariadb.org/) instead). However, there is one big caveat: 
 AWS doesn't support Postgres for RDS yet. This means that if you want high 
 availibility and scalability, you're going to have to create your own solution. 
+
 Yeah, things like [Cloud Postgres](http://www.cloudpostgres.com/) exist, but 
 they're nowhere near the power of RDS (that's not to bash on Cloud Postgres, 
 which is a really cool platform). So if you can use MySQL, Oracle or MSSQL, 
 I'd recommend doing that, and saying goodbye to  Postgres until Amazon 
 integrates it into RDS. This will give you easy access to to performance and
 reliability. You really can't beat it. 
+
+{% img center /images/yourproblem.png 350 350 'image' 'images' %}
+
+
+-> *Your Problem* <-
+
+
+{% img center /images/notyourproblem.png 350 350 'image' 'images' %}
+
+
+-> *Not Your Problem* <-
 
 However, if you're like Sudo, you don't really have that choice. We use location
 data extensively for to help users find deals near them, and that means we need 
@@ -28,7 +40,7 @@ and compare all of that to GeoDjango's compatible database backends
 
 **TL;DR** Sometimes you just gotta roll your own infrastructure.
 
-## Planning It
+## What Do We Want?
 
 So our requirements are something like this (and in this order)
 
@@ -41,7 +53,8 @@ Just by picking Postgres+PostGIS we get #1 an #2, literally for free. If you're
 curious how easy it is to set up a location aware Postgres database with Django,
 my chef recipe says the server config takes about three steps. 
 
-Getting the last two problems solved is a lot harder than the first two, though.
+Getting the last two problems solved is a lot harder than the first two, though,
+and it's probably worthwhile to at least examine the basic ideas behind each. 
 
 ### High Availability
 
@@ -50,21 +63,31 @@ Any sysadmin should crave uptime. Ideally no part of your
 infrastructure should be a single point of failure for your application. This
 means clustering, failover, replication, and more. The goal should be not just 
 to keep your application from going offline, but to keep you and your team 
-from having to rescue or rebuild it by hand. Ideally, a database server could be
-go down and the rest of your cluster could recover without going offline, and
-a replacement server could be provisioned, and joined to the cluster. This
-should all happen without you having to lift a finger. Build a system like this
-across all availability zones in an AWS region, and you get a database cluster
-that's very hard to take down without an act of God (or a very mistaken sysadmin).
+from having to rescue or rebuild it by hand. Ideally, a database server could 
+go down and the rest of your cluster could recover without going offline. Better
+yet, a replacement server could be automatically provisioned, and joined to the 
+cluster to replace the broken node. If you can set this up across all 
+availability zones in an AWS region, and you get a database cluster that's very 
+hard to take down without an act of God (or a very mistaken sysadmin).
+
+The fast pace of modern development, taken together with the complicated systems
+that they leverage means that things will inevitably break. High availability
+architecture ensures that a single server failing doesn't cause any serious
+damage or downtime to your application.
+
+This is equally good for developers and users. For operations engineers, this 
+means no 3am calls from Nagios requiring you to manually repair a database.
+
+For users, it means the application is always ready for them whenever they want
+it. 
+
+
+{% img center /images/reddit.gif 350 350 'image' 'images' %}
+
+-> Avoid this <-
+
 
 ### High Performance
 
 The advantage of this system is that not only do you get high availaility, 
 
-## Rolling It
-THIS 
-IS
-SOME
-MOR
-TEST
-DATA
