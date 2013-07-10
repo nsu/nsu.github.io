@@ -4,7 +4,7 @@
   <title><![CDATA[Electric Garbage]]></title>
   <link href="http://blog.alexkarpinski.com/atom.xml" rel="self"/>
   <link href="http://blog.alexkarpinski.com/"/>
-  <updated>2013-07-09T23:24:49-04:00</updated>
+  <updated>2013-07-09T23:40:24-04:00</updated>
   <id>http://blog.alexkarpinski.com/</id>
   <author>
     <name><![CDATA[Alex Karpinski]]></name>
@@ -105,9 +105,24 @@ it.</p>
 
 <p style="text-align:center;"> Avoid this</p>
 
-<h3>High Performance</h3>
+<h3>High Scalability</h3>
 
-<p>The advantage of this system is that not only do you get high availaility,</p>
+<p>While Sudo doesn&rsquo;t need the sort of performance that apps like Instagram or
+Pinterest use AWS to achieve, we don&rsquo;t want to be locked into a low-performance
+solution for our database, just because it fit our needs early on.</p>
+
+<p>The goal here is to build a database layer that can increase and decrease in
+performance in order to best fit our needs at any given time. This
+means that not only should we have the ability to easily scale our database
+to respond to increases in user demand, but we should also be able to decrease
+during lulls in order to minimize cost.</p>
+
+<h2>What&rsquo;s Next?</h2>
+
+<p>The goal is to use Chef, and some combination of Amazon tools in order to
+provide this scalable, resiliant location-aware database architecture. If you&rsquo;re
+interested in the options, check out part two for a few possible solutions to
+this problem.</p>
 ]]></content>
   </entry>
   
