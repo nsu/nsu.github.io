@@ -40,7 +40,8 @@ for a good comparison of the available location-aware databases. Then compare th
 and compare all of that to [GeoDjango's compatible database
 backends](https://docs.djangoproject.com/en/dev/ref/contrib/gis/db-api/)
 
-The result is that sometimes you've just gotta roll your own infrastructure.
+The result is that we're pretty much stuck with Postgres, and that means
+we have toroll our own database infrastructure.
 
 ## What Do We Want?
 
