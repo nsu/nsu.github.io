@@ -3,7 +3,7 @@ layout: post
 title: "High availability postgres on AWS"
 date: 2013-06-30 13:01
 comments: true
-categories: [Django, GIS, location, database, scaling]
+categories: 
 ---
 At [Sudo](http://gosudo.com) we use Postgres for our database backend. Postgres 
 is a fantastic database that provides a lot of functionality and stability over 
