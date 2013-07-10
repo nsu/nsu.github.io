@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "High availability postgres on AWS: The Problem"
-date: 2013-06-30 13:01
+date: 2013-06-30 
 comments: true
 categories: 
 ---
@@ -10,7 +10,8 @@ is a fantastic database that provides a lot of functionality and stability over
 MySQL (and if you really want to use MySQL, you should use 
 [MariaDB](http://mariadb.org/) instead). However, there is one big caveat: 
 AWS doesn't support Postgres for RDS yet. This means that if you want high 
-availibility and scalability, you're going to have to create your own solution. 
+availability and scalability with Postgres, you're going to have to implement 
+your own solution. 
 
 Yeah, things like [Cloud Postgres](http://www.cloudpostgres.com/) exist, but 
 they're nowhere near the power of RDS (that's not to bash on Cloud Postgres, 
@@ -51,10 +52,16 @@ So our requirements are something like this (and in this order)
 
 Just by picking Postgres+PostGIS we get #1 an #2, literally for free. If you're
 curious how easy it is to set up a location aware Postgres database with Django,
-my chef recipe says the server config takes about three steps. 
+well, [It's not that easy, but it's not that
+hard either](https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/postgis/)
 
 Getting the last two problems solved is a lot harder than the first two, though,
-and it's probably worthwhile to at least examine the basic ideas behind each. 
+and it's probably worthwhile to at least examine the basic reasons you might
+want each. 
+
+If you're comfortable with operations engineering, you can probably skip this 
+next bit safely. 
+
 
 ### High Availability
 
