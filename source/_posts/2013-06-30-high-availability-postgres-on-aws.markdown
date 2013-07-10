@@ -13,8 +13,8 @@ AWS doesn't support Postgres for RDS yet. This means that if you want high
 availability and scalability with Postgres, you're going to have to implement 
 your own solution. 
 
-Yeah, things like [Cloud Postgres](http://www.cloudpostgres.com/) exist, but 
-they're nowhere near the power of RDS (that's not to bash on Cloud Postgres, 
+There are things like [Cloud Postgres](http://www.cloudpostgres.com/) out there, but 
+they don't provide anything like the power of RDS (that's not to bash on Cloud Postgres, 
 which is a really cool platform). So if you can use MySQL, Oracle or MSSQL, 
 I'd recommend doing that, and saying goodbye to  Postgres until Amazon 
 integrates it into RDS. This will give you easy access to to performance and
