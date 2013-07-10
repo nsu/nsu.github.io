@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Electric Garbage</title>
+  <meta name="author" content="Alex Karpinski">
+
+  
+  <meta name="description" content="At Sudo we use Postgres for our database backend. Postgres
+is a fantastic database that provides a lot of functionality and stability over
+MySQL (and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.alexkarpinski.com">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Electric Garbage" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Electric Garbage</a></h1>
+  
+    <h2>Preparing for Scale</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.alexkarpinski.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/30/high-availability-postgres-on-aws/">High Availability Postgres on AWS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-30T13:01:00-04:00" pubdate data-updated="true">Jun 30<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>At <a href="http://gosudo.com">Sudo</a> we use Postgres for our database backend. Postgres
+is a fantastic database that provides a lot of functionality and stability over
+MySQL (and if you really want to use MySQL, you should use
+<a href="http://mariadb.org/">MariaDB</a> instead). However, there is one big caveat:
+AWS doesn&rsquo;t support Postgres for RDS yet. This means that if you want high
+availibility and scalability, you&rsquo;re going to have to create your own solution.
+Yeah, things like <a href="http://www.cloudpostgres.com/">Cloud Postgres</a> exist, but
+they&rsquo;re nowhere near the power of RDS (that&rsquo;s not to bash on Cloud Postgres,
+which is a really cool platform). So if you can use MySQL, Oracle or MSSQL,
+I&rsquo;d recommend doing that, and saying goodbye to  Postgres until Amazon
+integrates it into RDS. This will give you easy access to to performance and
+reliability. You really can&rsquo;t beat it.</p>
+
+<p>However, if you&rsquo;re like Sudo, you don&rsquo;t really have that choice. We use location
+data extensively for to help users find deals near them, and that means we need
+a location-aware DB. Check out
+<a href="http://www.bostongis.com/PrinterFriendly.aspx?content_name=sqlserver2008_postgis_mysql_compare">these tables</a>
+for a good comparion of the available location-aware databases. Then compare that with
+<a href="https://docs.djangoproject.com/en/dev/ref/databases/#using-a-3rd-party-database-backend">Django&rsquo;s ORM compatability</a>
+and compare all of that to GeoDjango&rsquo;s compatible database backends</p>
+
+<p><strong>TL;DR</strong> Sometimes you just gotta roll your own infrastructure.</p>
+
+<h2>Planning It</h2>
+
+<p>So our requirements are something like this (and in this order)</p>
+
+<ol>
+<li>Support location data</li>
+<li>Support Django</li>
+<li>Provide high availability</li>
+<li>Provide scaling capacity</li>
+</ol>
+
+
+<p>Just by picking Postgres+PostGIS we get #1 an #2, literally for free. If you&rsquo;re
+curious how easy it is to set up a location aware Postgres database with Django,
+my chef recipe says the server config takes about three steps.</p>
+
+<p>Getting the last two problems solved is a lot harder than the first two, though.</p>
+
+<h3>High Availability</h3>
+
+<p>Any sysadmin should crave uptime. Ideally no part of your
+infrastructure should be a single point of failure for your application. This
+means clustering, failover, replication, and more. The goal should be not just
+to keep your application from going offline, but to keep you and your team
+from having to rescue or rebuild it by hand. Ideally, a database server could be
+go down and the rest of your cluster could recover without going offline, and
+a replacement server could be provisioned, and joined to the cluster. This
+should all happen without you having to lift a finger. Build a system like this
+across all availability zones in an AWS region, and you get a database cluster
+that&rsquo;s very hard to take down without an act of God (or a very mistaken sysadmin).</p>
+
+<h3>High Performance</h3>
+
+<p>The advantage of this system is that not only do you get high availaility,</p>
+
+<h2>Rolling It</h2>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/06/29/initial-commit/">Initial Commit</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-29T23:44:00-04:00" pubdate data-updated="true">Jun 29<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/06/30/high-availability-postgres-on-aws/">High availability postgres on AWS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/29/initial-commit/">Initial commit</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Alex Karpinski -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
