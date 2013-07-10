@@ -14,9 +14,9 @@ availability and scalability with Postgres, you're going to have to implement
 your own solution. 
 
 There are things like [Cloud Postgres](http://www.cloudpostgres.com/) out there, but 
-they don't provide anything like the power of RDS (that's not to bash on Cloud Postgres, 
-which is a really cool platform). So if you can use MySQL, Oracle or MSSQL, 
-I'd recommend doing that, and saying goodbye to  Postgres until Amazon 
+they don't provide anything like the power of RDS. Ideally, if you're running
+your application on AWS, you should try to use RDS. That means using MySQL, 
+OracleDB or MSSQL, if at all possible, and saying goodbye to  Postgres until Amazon 
 integrates it into RDS. This will give you easy access to to performance and
 reliability. You really can't beat it. 
 
