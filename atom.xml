@@ -4,7 +4,7 @@
   <title><![CDATA[Electric Garbage]]></title>
   <link href="http://blog.alexkarpinski.com/atom.xml" rel="self"/>
   <link href="http://blog.alexkarpinski.com/"/>
-  <updated>2013-07-09T23:13:35-04:00</updated>
+  <updated>2013-07-09T23:15:56-04:00</updated>
   <id>http://blog.alexkarpinski.com/</id>
   <author>
     <name><![CDATA[Alex Karpinski]]></name>
@@ -23,7 +23,8 @@ is a fantastic database that provides a lot of functionality and stability over
 MySQL (and if you really want to use MySQL, you should use
 <a href="http://mariadb.org/">MariaDB</a> instead). However, there is one big caveat:
 AWS doesn&rsquo;t support Postgres for RDS yet. This means that if you want high
-availibility and scalability, you&rsquo;re going to have to create your own solution.</p>
+availability and scalability with Postgres, you&rsquo;re going to have to implement
+your own solution.</p>
 
 <p>Yeah, things like <a href="http://www.cloudpostgres.com/">Cloud Postgres</a> exist, but
 they&rsquo;re nowhere near the power of RDS (that&rsquo;s not to bash on Cloud Postgres,
