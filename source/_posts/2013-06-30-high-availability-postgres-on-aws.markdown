@@ -91,7 +91,7 @@ For users, it means the application is always ready for them whenever they want
 it. 
 
 
-{% img center /images/reddit.gif 350 350 'image' 'images' %}
+{% img center /images/reddit.png 350 350 'image' 'images' %}
 
 -> Avoid this <-
 
