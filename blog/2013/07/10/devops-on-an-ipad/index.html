@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Electric Garbage</title>
+  <title>Devops on an iPad - Electric Garbage</title>
   <meta name="author" content="Alex Karpinski">
 
   
@@ -19,7 +19,7 @@ personal notebook, in my lap. I ended up graduating to a workstation setup &hell
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://blog.alexkarpinski.com">
+  <link rel="canonical" href="http://blog.alexkarpinski.com/blog/2013/07/10/devops-on-an-ipad">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Electric Garbage" type="application/atom+xml">
@@ -64,15 +64,12 @@ personal notebook, in my lap. I ended up graduating to a workstation setup &hell
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/07/10/devops-on-an-ipad/">Devops on an iPad</a></h1>
+      <h1 class="entry-title">Devops on an iPad</h1>
     
     
       <p class="meta">
@@ -95,7 +92,7 @@ personal notebook, in my lap. I ended up graduating to a workstation setup &hell
   </header>
 
 
-  <div class="entry-content"><p>When I started software development I worked pretty much exclusively on my
+<div class="entry-content"><p>When I started software development I worked pretty much exclusively on my
 personal notebook, in my lap. I ended up graduating to a workstation setup like
 this by 2011.</p>
 
@@ -181,162 +178,16 @@ real limitations.</p>
 </ul>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/30/high-availability-postgres-on-aws/">High Availability Postgres on AWS: The Problem</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">Alex Karpinski</span></span>
 
-<time datetime="2013-06-30T00:00:00-04:00" pubdate data-updated="true">Jun 30<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>At <a href="http://gosudo.com">Sudo</a> we use Postgres for our database backend. Postgres
-is a fantastic database that provides a lot of functionality and stability over
-MySQL (and if you really want to use MySQL, you should use
-<a href="http://mariadb.org/">MariaDB</a> instead). However, there is one big caveat:
-AWS doesn&rsquo;t support Postgres for RDS yet. This means that if you want high
-availability and scalability with Postgres, you&rsquo;re going to have to implement
-your own solution.</p>
-
-<p>There are things like <a href="http://www.cloudpostgres.com/">Cloud Postgres</a> out there, but
-they don&rsquo;t provide anything like the power of RDS. Ideally, if you&rsquo;re running
-your application on AWS, you should try to use RDS. That means using MySQL,
-OracleDB or MSSQL, if at all possible, and saying goodbye to  Postgres until Amazon
-integrates it into RDS. This will give you easy access to to performance and
-reliability. You really can&rsquo;t beat it.</p>
-
-<p><img class="center" src="/images/yourproblem.png" width="350" height="350" title="image" alt="images"></p>
-
-<p style="text-align:center;"> <em>Your Problem</em></p>
-
-<p><img class="center" src="/images/notyourproblem.png" width="350" height="350" title="image" alt="images"></p>
-
-<p style="text-align:center;"> <em>Not Your Problem</em></p>
-
-<p>However, if you&rsquo;re like Sudo, you don&rsquo;t really have that choice. We use location
-data extensively for to help users find deals near them, and that means we need
-a location-aware DB. Check out
-<a href="http://www.bostongis.com/PrinterFriendly.aspx?content_name=sqlserver2008_postgis_mysql_compare">these tables</a>
-for a good comparison of the available location-aware databases. Then compare that with
-<a href="https://docs.djangoproject.com/en/dev/ref/databases/#using-a-3rd-party-database-backend">Django&rsquo;s ORM compatability</a>
-and compare all of that to <a href="https://docs.djangoproject.com/en/dev/ref/contrib/gis/db-api/">GeoDjango&rsquo;s compatible database
-backends</a></p>
-
-<p>The result is that we&rsquo;re pretty much stuck with Postgres, and that means
-we have toroll our own database infrastructure.</p>
-
-<h2>What Do We Want?</h2>
-
-<p>So our requirements are something like this (and in this order)</p>
-
-<ol>
-<li>Support location data</li>
-<li>Support Django</li>
-<li>Provide high availability</li>
-<li>Provide scaling capacity</li>
-</ol>
-
-
-<p>Just by picking Postgres+PostGIS we get #1 an #2, literally for free. If you&rsquo;re
-curious how easy it is to set up a location aware Postgres database with Django,
-well, <a href="https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/postgis/">It&rsquo;s not that easy, but it&rsquo;s not that
-hard either</a></p>
-
-<p>Getting the last two problems solved is a lot harder than the first two, though,
-and it&rsquo;s probably worthwhile to at least examine the basic reasons you might
-want each.</p>
-
-<p>If you&rsquo;re comfortable with operations engineering, you can probably skip this
-next bit safely.</p>
-
-<h3>High Availability</h3>
-
-<p>Any sysadmin should crave uptime. Ideally no part of your
-infrastructure should be a single point of failure for your application. This
-means clustering, failover, replication, and more. The goal should be not just
-to keep your application from going offline, but to keep you and your team
-from having to rescue or rebuild it by hand. Ideally, a database server could
-go down and the rest of your cluster could recover without going offline. Better
-yet, a replacement server could be automatically provisioned, and joined to the
-cluster to replace the broken node. If you can set this up across all
-availability zones in an AWS region, and you get a database cluster that&rsquo;s very
-hard to take down without an act of God (or a very mistaken sysadmin).</p>
-
-<p>The fast pace of modern development, taken together with the complicated systems
-that they leverage means that things will inevitably break. High availability
-architecture ensures that a single server failing doesn&rsquo;t cause any serious
-damage or downtime to your application.</p>
-
-<p>This is equally good for developers and users. For operations engineers, this
-means no 3am calls from Nagios requiring you to manually repair a database.</p>
-
-<p>For users, it means the application is always ready for them whenever they want
-it.</p>
-
-<p><img class="center" src="/images/reddit.png" width="350" height="350" title="image" alt="images"></p>
-
-<p style="text-align:center;"> Avoid this</p>
-
-<h3>High Scalability</h3>
-
-<p>While Sudo doesn&rsquo;t need the sort of performance that apps like Instagram or
-Pinterest use AWS to achieve, we don&rsquo;t want to be locked into a low-performance
-solution for our database, just because it fit our needs early on.</p>
-
-<p>The goal here is to build a database layer that can increase and decrease in
-performance in order to best fit our needs at any given time. This
-means that not only should we have the ability to easily scale our database
-to respond to increases in user demand, but we should also be able to decrease
-during lulls in order to minimize cost.</p>
-
-<h2>What&rsquo;s Next?</h2>
-
-<p>There are a number of ways to solve this problem. At Sudo we use
-<a href="http://www.opscode.com/chef/">Chef</a> for automated deployment, so any solution
-we create will be implemented through it. If you&rsquo;re interested in some of the
-possible ways to go about building a solution, check out <a href="#">part two</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/29/initial-commit/">Initial Commit</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -348,27 +199,33 @@ possible ways to go about building a solution, check out <a href="#">part two</a
   
 
 
-<time datetime="2013-06-29T23:44:00-04:00" pubdate data-updated="true">Jun 29<span>th</span>, 2013</time>
-        
-      </p>
+<time datetime="2013-07-10T00:36:00-04:00" pubdate data-updated="true">Jul 10<span>th</span>, 2013</time>
+      
+
+
+    </p>
     
-  </header>
-
-
-  <div class="entry-content">
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.alexkarpinski.com/blog/2013/07/10/devops-on-an-ipad/" data-via="" data-counturl="http://blog.alexkarpinski.com/blog/2013/07/10/devops-on-an-ipad/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/06/30/high-availability-postgres-on-aws/" title="Previous Post: High availability postgres on AWS: The Problem">&laquo; High availability postgres on AWS: The Problem</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
 
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -396,6 +253,7 @@ possible ways to go about building a solution, check out <a href="#">part two</a
 
   
 </aside>
+
 
     </div>
   </div>

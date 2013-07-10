@@ -4,7 +4,7 @@
   <title><![CDATA[Electric Garbage]]></title>
   <link href="http://blog.alexkarpinski.com/atom.xml" rel="self"/>
   <link href="http://blog.alexkarpinski.com/"/>
-  <updated>2013-07-10T00:15:06-04:00</updated>
+  <updated>2013-07-10T01:34:26-04:00</updated>
   <id>http://blog.alexkarpinski.com/</id>
   <author>
     <name><![CDATA[Alex Karpinski]]></name>
@@ -12,6 +12,99 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Devops on an iPad]]></title>
+    <link href="http://blog.alexkarpinski.com/blog/2013/07/10/devops-on-an-ipad/"/>
+    <updated>2013-07-10T00:36:00-04:00</updated>
+    <id>http://blog.alexkarpinski.com/blog/2013/07/10/devops-on-an-ipad</id>
+    <content type="html"><![CDATA[<p>When I started software development I worked pretty much exclusively on my
+personal notebook, in my lap. I ended up graduating to a workstation setup like
+this by 2011.</p>
+
+<p>IMAGE</p>
+
+<p>That&rsquo;s a <a href="http://www.hengedocks.com/">Henge Dock</a> with a pretty heavily upgraded
+13&#8221; Macbook Pro, and a <a href="http://pckeyboard.com/page/UKBD/UB40P4A">Unicomp Classic</a>.
+What you can&rsquo;t see is the big server in the next room with kernel-based virtual
+machines running on it.</p>
+
+<p>This setup gave me a ton of flexibility and the freedom
+to work on static websites, web applications, and devops configurations with
+little to no interruption or reconfiguration. If you like having a conventional
+desktop workstation, I can highly recommend every bit of this setup.</p>
+
+<p>When I started working for Sudo in early 2013, I shifted from a role of combined
+operations and development, to full-time operations engineering. This meant that
+most of my time was spent SSH\&rsquo;d into other servers, and what time wasn&rsquo;t spend
+there, was spent in the Amazon Web Services console.</p>
+
+<p>Also I had to go to an office. On this.</p>
+
+<p>IMAGE</p>
+
+<p>Taking in a laptop every day with the possibility of accidents and rain wasn&rsquo;t
+appealing to me. Add to that the weight of a laptop, and I wasn&rsquo;t looking
+forward to my commute.</p>
+
+<p>I&rsquo;ve never really gotten the point of tablets. That&rsquo;s not to say I think they&rsquo;re
+bad, but I never had any urge to buy one. Faced with my new commute and a new
+job, they were suddenly starting to look appealing.</p>
+
+<p>I was already spending all of my time in a single application anyway. If all I
+needed was Terminal and a bit of Chrome on my laptop, why should it be any
+different on the iPad? Full screen terminals are a perfect work environment, and
+that translates to the tablet ecosystem better than a whole lot of other tasks
+that have ended up on there.</p>
+
+<p>As long as I could get a half-decent terminal emulator and SSH client on an
+iPad, I could hook it up an an EC2 instance inside Sudo&rsquo;s VPC and be right back
+to work.</p>
+
+<p>NOTE: I really wanted to make this work on a Microsoft Surface RT, but the
+software just wasn&rsquo;t ready.</p>
+
+<p>Now I bike to work with an iPad on the back of my bike.</p>
+
+<p>IMAGE</p>
+
+<p>It&rsquo;s way lighter, way harder to break, and a lot less to lose if it gets stolen.
+Coupled with the fantastic <a href="http://www.moshimonde.com/product/iglaze-with-versacover.aspx">Moshi Versacover</a>,
+a bluetooth keyboard, and <a href="http://www.zinger-soft.com/iSSH_features.html">iSSH</a>
+you actually end up with a pretty capable development machine.</p>
+
+<p>Unless you need the AWS Console.</p>
+
+<p>If you need the AWS Web Console You&rsquo;re going to have a terrible time with this
+setup. I had to entirely abandon the web interface for AWS when working from my
+iPad. It&rsquo;s sluggish at best, dangerous at worst. Most of the time it just takes
+forever to load anything, and once it has, good luck interacting with it.
+Often, Safari (or Chrome, or Opera) will simply crash when trying to load a new
+interface component. If you&rsquo;re really unlucky your impatient taps will finally
+get registeres after two or three minutes of waiting, only to incorrectly
+configure a new load balancer of Route53 record.</p>
+
+<p>When it comes to AWS, use the <a href="https://aws.amazon.com/cli/">CLI tools</a>, or one
+of the SDKs. I&rsquo;ve used both <a href="https://aws.amazon.com/sdkforruby/">Ruby&rsquo;s aws-sdk</a>
+and <a href="https://aws.amazon.com/sdkforpython/">Python&rsquo;s boto</a> and both are
+fantastic.</p>
+
+<p>The bottom line is that the iPad can be a great alternative to a conventional
+desktop workstation, but it takes some serious getting used to, and has some
+real limitations.</p>
+
+<h2>More</h2>
+
+<p>If you&rsquo;re interested in the idea, I really recommend checking out these links.</p>
+
+<ul>
+<li><a href="http://yieldthought.com/post/12239282034/swapped-my-macbook-for-an-ipad">I swapped my MacBook for an iPad+Linode</a></li>
+<li><a href="http://yieldthought.com/post/31857050698/ipad-linode-1-year-later">iPad + Linode, 1 Year Later</a></li>
+<li><a href="http://thebinaryapp.com/">Binary &ndash; Development Environment for iPad</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[High availability postgres on AWS: The Problem]]></title>
@@ -101,7 +194,7 @@ means no 3am calls from Nagios requiring you to manually repair a database.</p>
 <p>For users, it means the application is always ready for them whenever they want
 it.</p>
 
-<p><img class="center" src="http://blog.alexkarpinski.com/images/reddit.gif" width="350" height="350" title="image" alt="images"></p>
+<p><img class="center" src="http://blog.alexkarpinski.com/images/reddit.png" width="350" height="350" title="image" alt="images"></p>
 
 <p style="text-align:center;"> Avoid this</p>
 
