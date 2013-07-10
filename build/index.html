@@ -101,7 +101,8 @@ is a fantastic database that provides a lot of functionality and stability over
 MySQL (and if you really want to use MySQL, you should use
 <a href="http://mariadb.org/">MariaDB</a> instead). However, there is one big caveat:
 AWS doesn&rsquo;t support Postgres for RDS yet. This means that if you want high
-availibility and scalability, you&rsquo;re going to have to create your own solution.</p>
+availability and scalability with Postgres, you&rsquo;re going to have to implement
+your own solution.</p>
 
 <p>Yeah, things like <a href="http://www.cloudpostgres.com/">Cloud Postgres</a> exist, but
 they&rsquo;re nowhere near the power of RDS (that&rsquo;s not to bash on Cloud Postgres,
@@ -122,11 +123,13 @@ reliability. You really can&rsquo;t beat it.</p>
 data extensively for to help users find deals near them, and that means we need
 a location-aware DB. Check out
 <a href="http://www.bostongis.com/PrinterFriendly.aspx?content_name=sqlserver2008_postgis_mysql_compare">these tables</a>
-for a good comparion of the available location-aware databases. Then compare that with
+for a good comparison of the available location-aware databases. Then compare that with
 <a href="https://docs.djangoproject.com/en/dev/ref/databases/#using-a-3rd-party-database-backend">Django&rsquo;s ORM compatability</a>
-and compare all of that to GeoDjango&rsquo;s compatible database backends</p>
+and compare all of that to <a href="https://docs.djangoproject.com/en/dev/ref/contrib/gis/db-api/">GeoDjango&rsquo;s compatible database
+backends</a></p>
 
-<p><strong>TL;DR</strong> Sometimes you just gotta roll your own infrastructure.</p>
+<p>The result is that we&rsquo;re pretty much stuck with Postgres, and that means
+we have toroll our own database infrastructure.</p>
 
 <h2>What Do We Want?</h2>
 
@@ -143,7 +146,7 @@ and compare all of that to GeoDjango&rsquo;s compatible database backends</p>
 <p>Just by picking Postgres+PostGIS we get #1 an #2, literally for free. If you&rsquo;re
 curious how easy it is to set up a location aware Postgres database with Django,
 well, <a href="https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/postgis/">It&rsquo;s not that easy, but it&rsquo;s not that
-hard</a></p>
+hard either</a></p>
 
 <p>Getting the last two problems solved is a lot harder than the first two, though,
 and it&rsquo;s probably worthwhile to at least examine the basic reasons you might
@@ -180,9 +183,24 @@ it.</p>
 
 <p style="text-align:center;"> Avoid this</p>
 
-<h3>High Performance</h3>
+<h3>High Scalability</h3>
 
-<p>The advantage of this system is that not only do you get high availaility,</p>
+<p>While Sudo doesn&rsquo;t need the sort of performance that apps like Instagram or
+Pinterest use AWS to achieve, we don&rsquo;t want to be locked into a low-performance
+solution for our database, just because it fit our needs early on.</p>
+
+<p>The goal here is to build a database layer that can increase and decrease in
+performance in order to best fit our needs at any given time. This
+means that not only should we have the ability to easily scale our database
+to respond to increases in user demand, but we should also be able to decrease
+during lulls in order to minimize cost.</p>
+
+<h2>What&rsquo;s Next?</h2>
+
+<p>There are a number of ways to solve this problem. At Sudo we use
+<a href="http://www.opscode.com/chef/">Chef</a> for automated deployment, so any solution
+we create will be implemented through it. If you&rsquo;re interested in some of the
+possible ways to go about building a solution, check out <a href="#">part two</a></p>
 </div>
   
   
