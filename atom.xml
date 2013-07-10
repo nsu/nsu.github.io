@@ -4,7 +4,7 @@
   <title><![CDATA[Electric Garbage]]></title>
   <link href="http://blog.alexkarpinski.com/atom.xml" rel="self"/>
   <link href="http://blog.alexkarpinski.com/"/>
-  <updated>2013-07-09T22:09:05-04:00</updated>
+  <updated>2013-07-09T22:10:14-04:00</updated>
   <id>http://blog.alexkarpinski.com/</id>
   <author>
     <name><![CDATA[Alex Karpinski]]></name>
@@ -77,8 +77,6 @@ that&rsquo;s very hard to take down without an act of God (or a very mistaken sy
 <p>The advantage of this system is that not only do you get high availaility,</p>
 
 <h2>Rolling It</h2>
-
-<p> TEST DATA</p>
 ]]></content>
   </entry>
   
