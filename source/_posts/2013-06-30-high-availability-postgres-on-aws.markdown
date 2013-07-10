@@ -111,7 +111,7 @@ during lulls in order to minimize cost.
 What's Next?
 ------------
 
-The goal is to use Chef, and some combination of Amazon tools in order to
-provide this scalable, resiliant location-aware database architecture. If you're
-interested in the options, check out part two for a few possible solutions to
-this problem.
+There are a number of ways to solve this problem. At Sudo we use
+[Chef](http://www.opscode.com/chef/) for automated deployment, so any solution
+we create will be implemented through it. If you're interested in some of the
+possible ways to go about building a solution, check out [part two](#) 
