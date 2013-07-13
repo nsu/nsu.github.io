@@ -7,20 +7,18 @@ categories:
 ---
 
 When I started software development I worked pretty much exclusively on my
-personal notebook, in my lap. I ended up graduating to a workstation setup like
-this by 2011.
+personal notebook, in my lap. I ended up migrating to a pretty standard 
+workstation by 2011.
 
-IMAGE
-
-That's a [Henge Dock](http://www.hengedocks.com/) with a pretty heavily upgraded
-13" Macbook Pro, and a [Unicomp Classic](http://pckeyboard.com/page/UKBD/UB40P4A).
-What you can't see is the big server in the next room with kernel-based virtual
-machines running on it. 
+Combining a [Henge Dock](http://www.hengedocks.com/) with a pretty heavily upgraded
+13" Macbook Pro, and a [Unicomp Classic](http://pckeyboard.com/page/UKBD/UB40P4A),
+gave me a really nice, capable work environment. Coupling that with a big home
+next room with kernel-based virtual machines made for carefree testing. 
 
 This setup gave me a ton of flexibility and the freedom
 to work on static websites, web applications, and devops configurations with
 little to no interruption or reconfiguration. If you like having a conventional
-desktop workstation, I can highly recommend every bit of this setup. 
+desktop workstation, I can highly recommend this style.
 
 When I started working for Sudo in early 2013, I shifted from a role of combined
 operations and development, to full-time operations engineering. This meant that
@@ -29,7 +27,7 @@ there, was spent in the Amazon Web Services console.
 
 Also I had to go to an office. On this.
 
-IMAGE
+{% img center /images/giant_escape.png  350 350 'image' 'images' %}
 
 Taking in a laptop every day with the possibility of accidents and rain wasn't
 appealing to me. Add to that the weight of a laptop, and I wasn't looking
@@ -54,7 +52,7 @@ software just wasn't ready.
 
 Now I bike to work with an iPad on the back of my bike.
 
-IMAGE
+{% img center /images/ipad-panniers.png  350 350 'image' 'images' %}
 
 It's way lighter, way harder to break, and a lot less to lose if it gets stolen.
 Coupled with the fantastic [Moshi Versacover](http://www.moshimonde.com/product/iglaze-with-versacover.aspx), 
