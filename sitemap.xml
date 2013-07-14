@@ -21,12 +21,18 @@
         <lastmod>2013-07-14T13:53:39-04:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://blog.alexkarpinski.com/blog/2013/07/14/high-availability-postgres-on-aws-pt-3-spof-busting/
+        </loc>
+        <lastmod>2013-07-14T13:59:18-04:00</lastmod>
+    </url>
+    <url>
         <loc>http://blog.alexkarpinski.com/blog/archives/</loc>
-        <lastmod>2013-07-14T13:53:39-04:00</lastmod>
+        <lastmod>2013-07-14T13:59:18-04:00</lastmod>
     </url>
     <url>
         <loc>http://blog.alexkarpinski.com/</loc>
-        <lastmod>2013-07-14T13:53:39-04:00</lastmod>
+        <lastmod>2013-07-14T13:59:18-04:00</lastmod>
     </url>
     <url>
         <loc>http://blog.alexkarpinski.com/robots.txt</loc>
