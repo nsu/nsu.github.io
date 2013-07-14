@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>High availability postgres on AWS Pt 2: Options - Electric Garbage</title>
+  <meta name="author" content="Alex Karpinski">
+
+  
+  <meta name="description" content="In Part 1, we talked
+about the need for high availability, and the trouble with getting there using
+Postgres on AWS. In part 2, we&rsquo;re going to &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://blog.alexkarpinski.com/blog/2013/07/13/high-availability-postgres-on-aws-pt-2-options">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Electric Garbage" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Electric Garbage</a></h1>
+  
+    <h2>Preparing for Scale</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:blog.alexkarpinski.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">High Availability Postgres on AWS Pt 2: Options</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-13T19:53:00-04:00" pubdate data-updated="true">Jul 13<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>In <a href="/blog/2013/06/30/high-availability-postgres-on-aws/">Part 1</a>, we talked
+about the need for high availability, and the trouble with getting there using
+Postgres on AWS. In part 2, we&rsquo;re going to examine two possible options for
+gaining extra availability and scalibility.</p>
+
+<p>Proper warning: I am <strong>not</strong> a Database Admin. I&rsquo;m responsible for the design
+and implementation of many different kinds of tools for Sudo. My goal is to
+build the least complex solution that fully solves our problems, and my choices
+reflect that.</p>
+
+<p>Alright, with that out of the way, let&rsquo;s get right to it.</p>
+
+<h2>Postgres 9.x with Streaming Replication</h2>
+
+<p>This is the solution that I know the least about and did the least research
+into, but I&rsquo;m including a mention of it here because I think it may be a very
+reliable answer to this problem, if only you have more time and patience than I
+do.</p>
+
+<p>The gist of this configuration is that you run multiple Postgres servers in
+<a href="https://wiki.postgresql.org/wiki/Streaming_Replication">streaming replication mode</a>.
+This is a configuration option that is built into postgres itself, and requires
+no outside software to manage, so far as I can tell.</p>
+
+<p>The problem is that it&rsquo;s not simple. Not in the least. Obviously nothing is
+simple when it comes to database scaling, but this setup looked particularly
+intensive.</p>
+
+<p>I think anyone with the patience to slog through
+<a href="http://www.postgresql.org/docs/9.0/static/high-availability.html">the official documentation</a>
+absolutely ought to. I simply didn&rsquo;t have the time, and I knew simpler options
+were out there. Aside from the complexity, my only concerns were that I&rsquo;d need
+to end up using some extra piece of software for load balancing, and that
+correctly load balancing reads/writes would end up being even <strong>more</strong>
+difficult.</p>
+
+<p>I was also slightly concerned with how to use Chef to manage such an
+infrastructure, since ideally all the nodes are identical, but due to the nature
+of standbys and masters and standbys, you end up with a sort of
+first-among-equals problem.</p>
+
+<h2>Along Comes Pgpool</h2>
+
+<p>Enter <a href="http://www.pgpool.net/mediawiki/index.php/Main_Page">pgpool</a>
+The next two solutions lean heavily on pgpool. Pgpool, with its streaming
+replication mode, load balancing, node recovery and other features make it an
+excellent alternative to using postgres itself to provide replication.</p>
+
+<p>Here&rsquo;s a quick rundown of what we get from pgpool</p>
+
+<ul>
+<li>Load balancing</li>
+<li>Health checks</li>
+<li>Streaming replication</li>
+<li>Online recovery</li>
+</ul>
+
+
+<h3>Online Recovery</h3>
+
+<p>It&rsquo;s worth spending a little time talking about online recovery alone.</p>
+
+<p>What it means is that if one backend database gets out of sync with the others,
+pgpool will notice and attempt to bring the node back into sync with the rest of
+the pool. The most obvious use for this feature is to help surviving against
+temporary outages of availability zones without having to re-provision entire
+clusters by hand.</p>
+
+<p>But the best part of online recovery is that you can add new instances to the
+pool dynamically. This means you can add more databases backends as you need
+them, and you can take down individual instances to increase their size in AWS
+without having to lose database access or manually recover them back into the
+pool once they boot back up.</p>
+
+<h3>SPOF</h3>
+
+<p>The next two solutions are all based on the premise that pgpool will be handling
+the majority of the complex backend task of keeping data synchronized and load
+balancing reads and writes. A basic configuration looks a little something like
+this.</p>
+
+<p><img class="center" src="/images/pgool-basics.png" title="" ></p>
+
+<p>This configuration provides all of the wonderful benefits of onlne recovery and
+load balancing, and it gives us a bit of extra security against outages, but
+there&rsquo;s one <em>big</em> problem that comes along with this setup. Pgpool now
+represents a SPOF, or single point of failure. If that one pgpool goes down, it
+takes out all database access. In the case of AWS, this means outage of a single
+availability zone can take down your whole application.</p>
+
+<p>In Part 3 we&rsquo;ll look into some configurations that can reduce the risk of this
+SPOF.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Alex Karpinski</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-13T19:53:00-04:00" pubdate data-updated="true">Jul 13<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://blog.alexkarpinski.com/blog/2013/07/13/high-availability-postgres-on-aws-pt-2-options/" data-via="" data-counturl="http://blog.alexkarpinski.com/blog/2013/07/13/high-availability-postgres-on-aws-pt-2-options/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/07/10/devops-on-an-ipad/" title="Previous Post: Devops on an iPad">&laquo; Devops on an iPad</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/13/high-availability-postgres-on-aws-pt-2-options/">High availability postgres on AWS Pt 2: Options</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/10/devops-on-an-ipad/">Devops on an iPad</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/30/high-availability-postgres-on-aws/">High availability postgres on AWS: The Problem</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/29/initial-commit/">Initial commit</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+ <!-- Copyright &copy; 2013 - Alex Karpinski -
+ <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>-->
+ <div style="display: block; margin-left: auto; margin-right: auto; width:202px"><a href="http://rochestermade.com" title="Rochester Made"><img src="http://rochestermade.com/media/images/rochester-made-dark-on-light.png" alt="Rochester Made" title="Rochester Made" /></a></div>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

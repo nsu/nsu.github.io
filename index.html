@@ -9,8 +9,9 @@
   <meta name="author" content="Alex Karpinski">
 
   
-  <meta name="description" content="When I started software development I worked pretty much exclusively on my
-personal notebook, in my lap. I ended up migrating to a pretty standard &hellip;">
+  <meta name="description" content="In Part 1, we talked
+about the need for high availability, and the trouble with getting there using
+Postgres on AWS. In part 2, we&rsquo;re going to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +67,133 @@ personal notebook, in my lap. I ended up migrating to a pretty standard &hellip;
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/13/high-availability-postgres-on-aws-pt-2-options/">High Availability Postgres on AWS Pt 2: Options</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-13T19:53:00-04:00" pubdate data-updated="true">Jul 13<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>In <a href="/blog/2013/06/30/high-availability-postgres-on-aws/">Part 1</a>, we talked
+about the need for high availability, and the trouble with getting there using
+Postgres on AWS. In part 2, we&rsquo;re going to examine two possible options for
+gaining extra availability and scalibility.</p>
+
+<p>Proper warning: I am <strong>not</strong> a Database Admin. I&rsquo;m responsible for the design
+and implementation of many different kinds of tools for Sudo. My goal is to
+build the least complex solution that fully solves our problems, and my choices
+reflect that.</p>
+
+<p>Alright, with that out of the way, let&rsquo;s get right to it.</p>
+
+<h2>Postgres 9.x with Streaming Replication</h2>
+
+<p>This is the solution that I know the least about and did the least research
+into, but I&rsquo;m including a mention of it here because I think it may be a very
+reliable answer to this problem, if only you have more time and patience than I
+do.</p>
+
+<p>The gist of this configuration is that you run multiple Postgres servers in
+<a href="https://wiki.postgresql.org/wiki/Streaming_Replication">streaming replication mode</a>.
+This is a configuration option that is built into postgres itself, and requires
+no outside software to manage, so far as I can tell.</p>
+
+<p>The problem is that it&rsquo;s not simple. Not in the least. Obviously nothing is
+simple when it comes to database scaling, but this setup looked particularly
+intensive.</p>
+
+<p>I think anyone with the patience to slog through
+<a href="http://www.postgresql.org/docs/9.0/static/high-availability.html">the official documentation</a>
+absolutely ought to. I simply didn&rsquo;t have the time, and I knew simpler options
+were out there. Aside from the complexity, my only concerns were that I&rsquo;d need
+to end up using some extra piece of software for load balancing, and that
+correctly load balancing reads/writes would end up being even <strong>more</strong>
+difficult.</p>
+
+<p>I was also slightly concerned with how to use Chef to manage such an
+infrastructure, since ideally all the nodes are identical, but due to the nature
+of standbys and masters and standbys, you end up with a sort of
+first-among-equals problem.</p>
+
+<h2>Along Comes Pgpool</h2>
+
+<p>Enter <a href="http://www.pgpool.net/mediawiki/index.php/Main_Page">pgpool</a>
+The next two solutions lean heavily on pgpool. Pgpool, with its streaming
+replication mode, load balancing, node recovery and other features make it an
+excellent alternative to using postgres itself to provide replication.</p>
+
+<p>Here&rsquo;s a quick rundown of what we get from pgpool</p>
+
+<ul>
+<li>Load balancing</li>
+<li>Health checks</li>
+<li>Streaming replication</li>
+<li>Online recovery</li>
+</ul>
+
+
+<h3>Online Recovery</h3>
+
+<p>It&rsquo;s worth spending a little time talking about online recovery alone.</p>
+
+<p>What it means is that if one backend database gets out of sync with the others,
+pgpool will notice and attempt to bring the node back into sync with the rest of
+the pool. The most obvious use for this feature is to help surviving against
+temporary outages of availability zones without having to re-provision entire
+clusters by hand.</p>
+
+<p>But the best part of online recovery is that you can add new instances to the
+pool dynamically. This means you can add more databases backends as you need
+them, and you can take down individual instances to increase their size in AWS
+without having to lose database access or manually recover them back into the
+pool once they boot back up.</p>
+
+<h3>SPOF</h3>
+
+<p>The next two solutions are all based on the premise that pgpool will be handling
+the majority of the complex backend task of keeping data synchronized and load
+balancing reads and writes. A basic configuration looks a little something like
+this.</p>
+
+<p><img class="center" src="/images/pgool-basics.png" title="" ></p>
+
+<p>This configuration provides all of the wonderful benefits of onlne recovery and
+load balancing, and it gives us a bit of extra security against outages, but
+there&rsquo;s one <em>big</em> problem that comes along with this setup. Pgpool now
+represents a SPOF, or single point of failure. If that one pgpool goes down, it
+takes out all database access. In the case of AWS, this means outage of a single
+availability zone can take down your whole application.</p>
+
+<p>In Part 3 we&rsquo;ll look into some configurations that can reduce the risk of this
+SPOF.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -317,7 +445,8 @@ during lulls in order to minimize cost.</p>
 <p>There are a number of ways to solve this problem. At Sudo we use
 <a href="http://www.opscode.com/chef/">Chef</a> for automated deployment, so any solution
 we create will be implemented through it. If you&rsquo;re interested in some of the
-possible ways to go about building a solution, check out <a href="#">part two</a></p>
+possible ways to go about building a solution, check out
+<a href="/blog/2013/07/13/high-availability-postgres-on-aws-pt-2-options/">part 2</a></p>
 </div>
   
   
@@ -372,6 +501,10 @@ possible ways to go about building a solution, check out <a href="#">part two</a
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/07/13/high-availability-postgres-on-aws-pt-2-options/">High availability postgres on AWS Pt 2: Options</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/07/10/devops-on-an-ipad/">Devops on an iPad</a>
