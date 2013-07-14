@@ -114,4 +114,5 @@ What's Next?
 There are a number of ways to solve this problem. At Sudo we use
 [Chef](http://www.opscode.com/chef/) for automated deployment, so any solution
 we create will be implemented through it. If you're interested in some of the
-possible ways to go about building a solution, check out [part two](#) 
+possible ways to go about building a solution, check out 
+[part 2](/blog/2013/07/13/high-availability-postgres-on-aws-pt-2-options/) 
